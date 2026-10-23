@@ -1,0 +1,26 @@
+services:
+  db:
+    image: mysql:8.4
+    container_name: project_mvc_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: project_mvc
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./public/docs/model-data:/docker-entrypoint-initdb.d:ro
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: project_mvc_app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+volumes:
+  mysql-data:
+  
